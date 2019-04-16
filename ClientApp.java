@@ -25,6 +25,7 @@ public static void main(String args[])throws Exception{
                 }
                 if(str2.length()>100){
                     FileOutputStream fo = new FileOutputStream(new File("testimonial.txt"));
+                    System.out.println("open testimonial.txt file");
                     byte b[]=str2.getBytes();
                     fo.write(b);
                     fo.close();

@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 class MyServer{ 
-    private static String adminName;
-    private static String adminPass;
-	
+    private static String adminName = "admin";
+    private static String adminPass = "admin";
+
 public static void main(String args[])throws Exception{
         File tempFile = new File("myObjects.txt");
         if(!tempFile.exists()){
@@ -92,17 +92,19 @@ public static void main(String args[])throws Exception{
                     else if(strClient.equals("5")){
                         boolean bl = bk.withdraw(100);
                         if(bl==true) {
-                            FileOutputStream fo = new FileOutputStream(new File("testimonial.txt"));
+                            
                             String form;
                             form = "This is to certify that " + bk.getName() + " son of " + bk.getFatherName() +
                                     " and " + bk.getMotherName() + " studing software engineering from Dhaka university at " +
                                     bk.getSemester() + " , " + bk.getYear() + "\n\nTo the best of my knoledge he did not take part "+
                                     "in any activities subversive of the state or dicipline.\nI wish him every in every success in life.";
-                            byte b[]=form.getBytes();
-                            fo.write(b);
+                            dout.writeUTF(form);
                         }
-                        else  dout.writeUTF("you have not sufficient money");
-                        din.readUTF();
+                        else {
+                            dout.writeUTF("you have not sufficient money");
+                            din.readUTF();
+                        }
+                        
                     }
                     
                     else break; //logout
@@ -115,7 +117,7 @@ public static void main(String args[])throws Exception{
                     dout.writeUTF("password: ");
                     password=din.readUTF();
                     if(adminName.equals(name) && adminPass.equals(password)){
-                        dout.writeUTF("1)login as student's account\n2)close connection\nchoose: ");
+                        dout.writeUTF("1)login as student's account\n2)add new student\n3)logout\nchoose: ");
                         strClient=din.readUTF();
                         if(strClient.equals("1")){
                             dout.writeUTF("give sudent's reg number");
@@ -134,7 +136,7 @@ public static void main(String args[])throws Exception{
 
                             }
                             while(check){
-                                dout.writeUTF("change:\n1)student name\n2)CGPA\n3)year\n4)age\n5)add new student\nchoose");
+                                dout.writeUTF("change:\n1)student name\n2)CGPA\n3)year\n4)age\nchoose");
                                 strClient = din.readUTF();
                                 if(strClient.equals("1")){
                                     dout.writeUTF("name: ");
@@ -156,46 +158,47 @@ public static void main(String args[])throws Exception{
                                     strClient = din.readUTF();
                                     bk.setName(strClient);
                                 }
-                                else if(strClient.equals("5")){
-                                    String fatherName,motherName,CGPA,year,semester,regNum;
-                                    dout.writeUTF("father name: ");
-                                    fatherName=din.readUTF();
-                                    
-                                    dout.writeUTF("mother name: ");
-                                    motherName=din.readUTF();
-                                    
-                                    dout.writeUTF("reg number: ");
-                                    regNum=din.readUTF();
-                                    
-                                    dout.writeUTF("CGPA: ");
-                                    CGPA=din.readUTF();
-                                    
-                                    dout.writeUTF("year: ");
-                                    year=din.readUTF();
-                                    
-                                    dout.writeUTF("semester: ");
-                                    semester=din.readUTF();
-                                    
-                                    dout.writeUTF("name: ");
-                                    accName=din.readUTF();
-
-                                    dout.writeUTF("age: ");
-                                    accAge=din.readUTF();
-
-                                    dout.writeUTF("balance: ");
-                                    accBalance=din.readUTF();
-
-                                    dout.writeUTF("password: ");
-                                    accPass=din.readUTF();
-
-                                    AllOFStudentIF acc = new AllOFStudentIF(accName,fatherName,motherName,year,semester,CGPA,regNum,Integer.parseInt(accAge),Double.parseDouble(accBalance),accPass);
-                                    arrOfObject.add(acc);
-                                }
+                                
                                 else continue;
                             }
                             
                         }
                         else if(strClient.equals("2")){
+                            String fatherName,motherName,CGPA,year,semester,regNum;
+                            dout.writeUTF("father name: ");
+                            fatherName=din.readUTF();
+
+                            dout.writeUTF("mother name: ");
+                            motherName=din.readUTF();
+
+                            dout.writeUTF("reg number: ");
+                            regNum=din.readUTF();
+
+                            dout.writeUTF("CGPA: ");
+                            CGPA=din.readUTF();
+
+                            dout.writeUTF("year: ");
+                            year=din.readUTF();
+
+                            dout.writeUTF("semester: ");
+                            semester=din.readUTF();
+
+                            dout.writeUTF("name: ");
+                            accName=din.readUTF();
+
+                            dout.writeUTF("age: ");
+                            accAge=din.readUTF();
+
+                            dout.writeUTF("balance: ");
+                            accBalance=din.readUTF();
+
+                            dout.writeUTF("password: ");
+                            accPass=din.readUTF();
+
+                            AllOFStudentIF acc = new AllOFStudentIF(accName,fatherName,motherName,year,semester,CGPA,regNum,Integer.parseInt(accAge),Double.parseDouble(accBalance),accPass);
+                            arrOfObject.add(acc);
+                        }
+                        else if(strClient.equals("3")){ //logout
                             break;
                         }
                         else {
