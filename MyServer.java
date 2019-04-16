@@ -9,7 +9,14 @@ class MyServer{
     private static String adminName;
     private static String adminPass;
 	
-public static void main(String args[])throws Exception{  
+public static void main(String args[])throws Exception{
+        File tempFile = new File("myObjects.txt");
+        if(!tempFile.exists()){
+            FileOutputStream fos = new FileOutputStream(tempFile);
+            ObjectOutputStream ois = new ObjectOutputStream(fos);
+            fos.close();
+            ois.close();
+        }
 	System.out.println("welcome to server");
 	ServerSocket ss=new ServerSocket(3333);  
 	Socket s=ss.accept();  
@@ -127,7 +134,7 @@ public static void main(String args[])throws Exception{
 
                             }
                             while(check){
-                                dout.writeUTF("change:\n1)student name\n2)CGPA\n3)year\n4)age\nchoose");
+                                dout.writeUTF("change:\n1)student name\n2)CGPA\n3)year\n4)age\n5)add new student\nchoose");
                                 strClient = din.readUTF();
                                 if(strClient.equals("1")){
                                     dout.writeUTF("name: ");
@@ -148,6 +155,41 @@ public static void main(String args[])throws Exception{
                                     dout.writeUTF("age: ");
                                     strClient = din.readUTF();
                                     bk.setName(strClient);
+                                }
+                                else if(strClient.equals("5")){
+                                    String fatherName,motherName,CGPA,year,semester,regNum;
+                                    dout.writeUTF("father name: ");
+                                    fatherName=din.readUTF();
+                                    
+                                    dout.writeUTF("mother name: ");
+                                    motherName=din.readUTF();
+                                    
+                                    dout.writeUTF("reg number: ");
+                                    regNum=din.readUTF();
+                                    
+                                    dout.writeUTF("CGPA: ");
+                                    CGPA=din.readUTF();
+                                    
+                                    dout.writeUTF("year: ");
+                                    year=din.readUTF();
+                                    
+                                    dout.writeUTF("semester: ");
+                                    semester=din.readUTF();
+                                    
+                                    dout.writeUTF("name: ");
+                                    accName=din.readUTF();
+
+                                    dout.writeUTF("age: ");
+                                    accAge=din.readUTF();
+
+                                    dout.writeUTF("balance: ");
+                                    accBalance=din.readUTF();
+
+                                    dout.writeUTF("password: ");
+                                    accPass=din.readUTF();
+
+                                    AllOFStudentIF acc = new AllOFStudentIF(accName,fatherName,motherName,year,semester,CGPA,regNum,Integer.parseInt(accAge),Double.parseDouble(accBalance),accPass);
+                                    arrOfObject.add(acc);
                                 }
                                 else continue;
                             }
@@ -191,8 +233,7 @@ public static void main(String args[])throws Exception{
         {
             System.out.println("Error initializing stream");
         }
-        
-	  
+          
 	din.close();  
 	s.close();  
 	ss.close(); 
