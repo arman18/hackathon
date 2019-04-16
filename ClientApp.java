@@ -23,9 +23,9 @@ public static void main(String args[])throws Exception{
                 catch (EOFException e) {
                     break;
                 }
-                if(str2.length()>100){
+                if(str2.length()>230){
                     FileOutputStream fo = new FileOutputStream(new File("testimonial.txt"));
-                    System.out.println("open testimonial.txt file");
+                    System.out.println("open testimonial.txt file : " + str2.length());
                     byte b[]=str2.getBytes();
                     fo.write(b);
                     fo.close();
