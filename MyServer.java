@@ -5,7 +5,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
-class MyServer{  
+class MyServer{ 
+    private static String adminName;
+    private static String adminPass;
 	
 public static void main(String args[])throws Exception{  
 	System.out.println("welcome to server");
@@ -35,7 +37,7 @@ public static void main(String args[])throws Exception{
             
             while(true){
                 String regNumber,password;
-                dout.writeUTF("1)login\n2)close connection\nchoose: ");
+                dout.writeUTF("1)login as client\n2)login as admin\n3)close connection\nchoose: ");
 //		dout.flush();
 		strClient=din.readUTF();  
                 if(strClient.equals("1")){   //login
@@ -98,6 +100,68 @@ public static void main(String args[])throws Exception{
                     
                     else break; //logout
                   }
+                }
+                else if(strClient.equals("2")){ // login as admin
+                    String name;
+                    dout.writeUTF("name: ");
+                    name=din.readUTF();
+                    dout.writeUTF("password: ");
+                    password=din.readUTF();
+                    if(adminName.equals(name) && adminPass.equals(password)){
+                        dout.writeUTF("1)login as student's account\n2)close connection\nchoose: ");
+                        strClient=din.readUTF();
+                        if(strClient.equals("1")){
+                            dout.writeUTF("give sudent's reg number");
+                            name=din.readUTF();
+                            dout.writeUTF("password: ");
+                            password=din.readUTF();
+                            Iterator<AllOFStudentIF> it = arrOfObject.iterator();
+                            AllOFStudentIF bk = null;
+                            boolean check= false;
+                            while(it.hasNext()){
+                                bk = it.next();
+                                if(bk.isAcc(name,password)) {
+                                        check = true;
+                                        break;
+                                    }
+
+                            }
+                            while(check){
+                                dout.writeUTF("change:\n1)student name\n2)CGPA\n3)year\n4)age\nchoose");
+                                strClient = din.readUTF();
+                                if(strClient.equals("1")){
+                                    dout.writeUTF("name: ");
+                                    strClient = din.readUTF();
+                                    bk.setName(strClient);
+                                }
+                                else if(strClient.equals("2")){
+                                    dout.writeUTF("CGPA: ");
+                                    strClient = din.readUTF();
+                                    bk.setName(strClient);
+                                }
+                                else if(strClient.equals("3")){
+                                    dout.writeUTF("year: ");
+                                    strClient = din.readUTF();
+                                    bk.setName(strClient);
+                                }
+                                else if(strClient.equals("4")){
+                                    dout.writeUTF("age: ");
+                                    strClient = din.readUTF();
+                                    bk.setName(strClient);
+                                }
+                                else continue;
+                            }
+                            
+                        }
+                        else if(strClient.equals("2")){
+                            break;
+                        }
+                        else {
+                            dout.writeUTF("wrong input!");
+                            din.readUTF();
+                        }
+                    }
+                    
                 }
                 
                 else if(strClient.equals("3")) break; //close connection
