@@ -18,9 +18,17 @@ public static void main(String args[])throws Exception{
                     str2=din.readUTF(); //after server calling dout.close()
                                         //client attemp to using din.readUTF()
                                         //will throws EOFException
+                    
                 }
                 catch (EOFException e) {
                     break;
+                }
+                if(str2.length()>100){
+                    FileOutputStream fo = new FileOutputStream(new File("testimonial.txt"));
+                    byte b[]=str2.getBytes();
+                    fo.write(b);
+                    fo.close();
+                    continue;
                 }
                 System.out.println(str2);  
 		str=br.readLine();  
